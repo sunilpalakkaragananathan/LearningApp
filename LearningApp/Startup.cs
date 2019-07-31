@@ -30,7 +30,7 @@ namespace LearningApp
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .ConfigureApiBehaviorOptions(options =>
                     {
-                        //options.SuppressModelStateInvalidFilter = true;
+                        options.SuppressModelStateInvalidFilter = true;
                         //options.SuppressInferBindingSourcesForParameters = true;
                         //options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
                         options.InvalidModelStateResponseFactory = actionContext =>
