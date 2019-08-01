@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shared;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Shared.Models;
+using Shared.Interface;
+using Shared.Manager;
 
 namespace LearningApp
 {
@@ -30,7 +34,7 @@ namespace LearningApp
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                     .ConfigureApiBehaviorOptions(options =>
                     {
-                        options.SuppressModelStateInvalidFilter = true;
+                        //options.SuppressModelStateInvalidFilter = true;
                         //options.SuppressInferBindingSourcesForParameters = true;
                         //options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
                         options.InvalidModelStateResponseFactory = actionContext =>
@@ -52,9 +56,11 @@ namespace LearningApp
             //        {
             //            options.Filters.Add<LoggingActionFilter>();
             //        });
-
+            services.Configure<SecurityConfig>(Configuration.GetSection("SecurityConfig"));
+            services.AddScoped<IFormatManager, FormatManager>();
             services.AddScoped<LoggingActionFilter>();
-
+            services.AddSingleton<IAppEncryption, AppEncryption>();
+            services.AddSingleton<IKeyManager, KeyManager>();
         }
 
         public class Error

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Interface;
 
 namespace LearningApp.Controllers
 {
@@ -13,6 +14,11 @@ namespace LearningApp.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        IFormatManager m_formatManager;
+        public ValuesController(IFormatManager formatManager)
+        {
+            m_formatManager = formatManager;
+        }
         [HttpGet]
         //[ServiceFilter(typeof(LoggingActionFilter))]
         //[LogFilter()]
@@ -23,12 +29,13 @@ namespace LearningApp.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{value}")]
         //[ServiceFilter(typeof(LoggingActionFilter))]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> Get(string value)
         {
             //return "value";
-            return CreatedAtAction(nameof(Get),id);
+            //string testvalue = "7dc87334c70fd0e0cbbc80475535e231";
+            return m_formatManager.Decrypt(value);
         }
 
         // POST api/values
@@ -51,6 +58,8 @@ namespace LearningApp.Controllers
         {
 
         }
+
+        
 
         public class Value
         {
