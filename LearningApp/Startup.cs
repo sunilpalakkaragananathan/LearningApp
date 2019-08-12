@@ -31,25 +31,27 @@ namespace LearningApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                    .ConfigureApiBehaviorOptions(options =>
-                    {
-                        //options.SuppressModelStateInvalidFilter = true;
-                        //options.SuppressInferBindingSourcesForParameters = true;
-                        //options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
-                        options.InvalidModelStateResponseFactory = actionContext =>
-                        {
-                            var errors = actionContext.ModelState
-                                .Where(e => e.Value.Errors.Count > 0)
-                                .Select(e => new Error
-                                {
-                                    Name = e.Key,
-                                    Message = e.Value.Errors.First().ErrorMessage
-                                }).ToArray();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-                            return new BadRequestObjectResult(errors);
-                        };
-                    });
+             //.ConfigureApiBehaviorOptions(options =>
+             // {
+             //     //options.SuppressModelStateInvalidFilter = true;
+             //     //options.SuppressInferBindingSourcesForParameters = true;
+             //     //options.SuppressUseValidationProblemDetailsForInvalidModelStateResponses = true;
+             //     options.InvalidModelStateResponseFactory = actionContext =>
+             //     {
+             //         var errors = actionContext.ModelState
+             //             .Where(e => e.Value.Errors.Count > 0)
+             //             .Select(e => new Error
+             //             {
+             //                 Name = e.Key,
+             //                 Message = e.Value.Errors.First().ErrorMessage
+             //             }).ToArray();
+
+             //         return new BadRequestObjectResult(errors);
+             //     };
+             // });
+
 
             //services.AddMvc()
             //        .AddMvcOptions(options =>

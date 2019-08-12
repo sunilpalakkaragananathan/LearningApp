@@ -24,32 +24,36 @@ namespace LearningApp.Controllers
         //[LogFilter()]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "value1"};
            
         }
 
         // GET api/values/5
-        [HttpGet("{value}")]
+        [HttpGet("{FirstName}/{Lastname}/{SSN}")]
         //[ServiceFilter(typeof(LoggingActionFilter))]
-        public ActionResult<string> Get(string value)
+        public ActionResult<string> Get(string FirstName,string Lastname,string SSN)
         {
             //return "value";
             //string testvalue = "7dc87334c70fd0e0cbbc80475535e231";
-            return m_formatManager.Decrypt(value);
+            string formattedstring = String.Format("FirstName:{0}\nLastName:{1}\nSSN:{2}", m_formatManager.Decrypt(FirstName), m_formatManager.Decrypt(Lastname), m_formatManager.Decrypt(SSN));
+            return formattedstring;
         }
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post(Value value)
+        public IActionResult Post(PricingScheduleBatch value)
         {
-            
-                return Ok(value);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+
         }
 
         // DELETE api/values/5
@@ -59,13 +63,46 @@ namespace LearningApp.Controllers
 
         }
 
-        
 
-        public class Value
+
+        public class Sku
         {
-            public int Id { get; set; }
-            [MinLength(3)]
-            public string Text { get; set; }
+            [Required]
+            public string SkuId { get; set; }
+
+            public string SkuDescription { get; set; }
+
+            [MinLength(1)]
+            public List<double> SkuPrice { get; set; }
         }
+
+        public class PricingSchedule
+        {
+            [MinLength(1)]
+            public List<Sku> Skus { get; set; }
+
+            [Required]
+            public DateTime? EffectiveDate { get; set; }
+        }
+
+        public class PricingScheduleBatch
+        {
+            [Required]
+            public List<string> OfficeList { get; set; }
+
+            [Required]
+            public PricingSchedule PricingSchedule { get; set; }
+        }
+    }
+
+   
+}
+public class MyDateAttribute : ValidationAttribute
+{
+    public override bool IsValid(object value)
+    {
+        DateTime d = Convert.ToDateTime(value);
+        return d > DateTime.MinValue; 
+
     }
 }
