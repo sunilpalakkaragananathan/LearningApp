@@ -1,9 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.PlatformAbstractions;
 using System;
-using System.IO;
 using System.Net.Http;
 
 namespace LearningApp.Tests
